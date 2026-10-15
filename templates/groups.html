@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SmartSplit | My Groups</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a class="brand" href="/dashboard">✳ SmartSplit</a>
+
+        <div class="nav-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/groups" class="active">My Groups</a>
+            <a href="/logout">Logout ↗</a>
+        </div>
+    </nav>
+
+    <main class="container">
+
+        <!-- Welcome banner -->
+        <section class="welcome-banner">
+            <div>
+                <span class="welcome-tag">YOUR SHARED EXPENSE WORKSPACE</span>
+                <h1>My Groups 👥</h1>
+                <p>Hi, {{ session["user_name"] }}! Organize expenses and split bills with ease.</p>
+            </div>
+
+            <div class="welcome-decoration">♧</div>
+        </section>
+
+        <!-- Create group form -->
+        <section class="section">
+            <div class="section-heading">
+                <div>
+                    <h2>Create a New Group</h2>
+                    <p>Start a group for a trip, friends, roommates, or any shared expense.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <form method="POST" action="/groups/create">
+
+                    <div class="grid-2">
+
+                        <div>
+                            <label for="group_name">Group Name *</label>
+                            <input
+                                type="text"
+                                id="group_name"
+                                name="group_name"
+                                placeholder="e.g. Goa Trip, College Friends"
+                                required
+                            >
+                        </div>
+
+                        <div>
+                            <label for="description">Description</label>
+                            <input
+                                type="text"
+                                id="description"
+                                name="description"
+                                placeholder="What's this group for?"
+                            >
+                        </div>
+
+                    </div>
+
+                    <div style="margin-top: 22px;">
+                        <button type="submit">＋ Create Group</button>
+                    </div>
+
+                </form>
+            </div>
+        </section>
+
+        <!-- Existing groups -->
+        <section class="section">
+
+            <div class="section-heading">
+                <div>
+                    <h2>Your Groups</h2>
+                    <p>Choose a group to view its members, expenses, balances, and settlements.</p>
+                </div>
+
+                {% if user_groups %}
+                    <span class="badge">
+                        {{ user_groups|length }}
+                        {% if user_groups|length == 1 %}group{% else %}groups{% endif %}
+                    </span>
+                {% endif %}
+            </div>
+
+            {% if user_groups %}
+
+                <div class="grid-3">
+
+                    {% for group in user_groups %}
+
+                        <article class="group-card">
+
+                            <div class="flex-between">
+                                <div class="group-icon">👥</div>
+                                <span class="badge">Active Group</span>
+                            </div>
+
+                            <div>
+                                <h3>{{ group.group_name }}</h3>
+
+                                {% if group.description %}
+                                    <p>{{ group.description }}</p>
+                                {% else %}
+                                    <p>No description added yet.</p>
+                                {% endif %}
+                            </div>
+
+                            <div style="margin-top: auto; padding-top: 10px;">
+                                <a
+                                    href="/groups/{{ group.group_id }}"
+                                    class="btn btn-block"
+                                >
+                                    Open Group →
+                                </a>
+                            </div>
+
+                        </article>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="empty-state">
+                    <div style="font-size: 42px; margin-bottom: 12px;">👥</div>
+
+                    <h3>No groups yet</h3>
+
+                    <p>
+                        Create your first group above to start tracking
+                        shared expenses with friends.
+                    </p>
+                </div>
+
+            {% endif %}
+
+        </section>
+
+        <!-- Footer -->
+        <footer style="text-align: center; padding: 30px 0 10px;">
+            <a href="/dashboard">← Back to Dashboard</a>
+            <p style="margin-top: 12px;">
+                Better expense sharing, happier friendships. 💚
+            </p>
+        </footer>
+
+    </main>
+
+</body>
+</html>

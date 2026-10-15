@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SmartSplit | {{ group.group_name }}</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a class="brand" href="/dashboard">✳ SmartSplit</a>
+
+        <div class="nav-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/groups" class="active">My Groups</a>
+            <a href="/logout">Logout ↗</a>
+        </div>
+    </nav>
+
+    <main class="container">
+
+        <!-- Group heading -->
+        <div style="margin-bottom: 22px;">
+            <a href="/groups" style="font-weight:600;">← Back to My Groups</a>
+        </div>
+
+        <section class="welcome-banner">
+            <div>
+                <span class="welcome-tag">YOUR SHARED SPACE</span>
+                <h1>👥 {{ group.group_name }}</h1>
+
+                {% if group.description %}
+                    <p>{{ group.description }}</p>
+                {% else %}
+                    <p>Manage shared expenses and keep everyone on the same page.</p>
+                {% endif %}
+            </div>
+
+            <div class="welcome-decoration">₹</div>
+        </section>
+
+        <!-- Members -->
+        <div class="section-heading">
+            <div>
+                <h2>Group Members</h2>
+                <p>People sharing expenses in this group.</p>
+            </div>
+
+            {% if members %}
+                <span class="badge">{{ members|length }} members</span>
+            {% endif %}
+        </div>
+
+        <section class="card">
+
+            {% if members %}
+                {% for member in members %}
+                    <div class="expense-row">
+
+                        <div class="row-main">
+                            <div class="group-icon">👤</div>
+
+                            <div>
+                                <div class="row-title">
+                                    {{ member.full_name }}
+                                </div>
+                                <div class="row-subtitle">
+                                    {{ member.email }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <span class="badge">Member</span>
+
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <h3>No members found</h3>
+                    <p>This group doesn't have any members to display yet.</p>
+                </div>
+            {% endif %}
+
+        </section>
+
+        <!-- Group actions -->
+        <section class="section">
+            <div class="section-heading">
+                <div>
+                    <h2>Manage Expenses</h2>
+                    <p>Everything for your group, organized in one place.</p>
+                </div>
+            </div>
+
+            <div class="grid-2">
+
+                <article class="card">
+                    <div class="group-icon">＋</div>
+
+                    <h3 style="margin-top:18px;">Add New Expense</h3>
+
+                    <p>
+                        Record a bill, choose who paid, and split the
+                        expense among your group members.
+                    </p>
+
+                    <a href="/groups/{{ group.group_id }}/add-expense"
+                       class="btn">
+                        Add Expense →
+                    </a>
+                </article>
+
+                <article class="card">
+                    <div class="group-icon">🧾</div>
+
+                    <h3 style="margin-top:18px;">All Expenses</h3>
+
+                    <p>
+                        Review your group's expense history and see
+                        previously recorded bills.
+                    </p>
+
+                    <a href="/groups/{{ group.group_id }}/expenses"
+                       class="btn btn-secondary">
+                        View Expenses →
+                    </a>
+                </article>
+
+                <article class="card">
+                    <div class="group-icon">⚖️</div>
+
+                    <h3 style="margin-top:18px;">Group Balances</h3>
+
+                    <p>
+                        Check who owes money and who should receive
+                        money from the group.
+                    </p>
+
+                    <a href="/groups/{{ group.group_id }}/balances"
+                       class="btn btn-secondary">
+                        View Balances →
+                    </a>
+                </article>
+
+                <article class="card">
+                    <div class="group-icon">🤝</div>
+
+                    <h3 style="margin-top:18px;">Smart Settlements</h3>
+
+                    <p>
+                        View suggested repayments and track which
+                        settlements have been paid.
+                    </p>
+
+                    <a href="/groups/{{ group.group_id }}/settlements"
+                       class="btn btn-secondary">
+                        View Settlements →
+                    </a>
+                </article>
+
+            </div>
+        </section>
+
+        <footer style="text-align:center; padding:28px 0 10px;">
+            <p>Better expense sharing, happier friendships. 💚</p>
+        </footer>
+
+    </main>
+
+</body>
+</html>

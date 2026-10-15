@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSplit | Create Account</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="auth-page">
+
+    <main class="auth-card">
+
+        <a href="/" class="brand" style="text-decoration: none;">
+            ✳ SmartSplit
+        </a>
+
+        <div style="margin-top: 28px;">
+            <span class="welcome-tag">GET STARTED</span>
+            <h1 style="margin-top: 12px;">Create your account</h1>
+            <p class="text-muted">
+                Start sharing expenses and managing group payments effortlessly.
+            </p>
+        </div>
+
+        <form method="POST" style="margin-top: 28px;">
+
+            <div class="form-group">
+                <label for="full_name">Full Name</label>
+                <input
+                    type="text"
+                    id="full_name"
+                    name="full_name"
+                    placeholder="Enter your full name"
+                    autocomplete="name"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="you@example.com"
+                    autocomplete="email"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Create a password"
+                    autocomplete="new-password"
+                    required
+                >
+            </div>
+
+            <button type="submit"
+                    class="btn btn-primary"
+                    style="width: 100%; margin-top: 12px;">
+                Create Account →
+            </button>
+
+        </form>
+
+        <div style="text-align: center; margin-top: 24px;">
+            <p class="text-muted">
+                Already have an account?
+                <a href="{{ url_for('auth.login') }}">Login here</a>
+            </p>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <p class="text-muted">
+                One account. Easier expenses. Happier groups. 💚
+            </p>
+        </div>
+
+    </main>
+
+</body>
+</html>

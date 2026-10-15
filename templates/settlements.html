@@ -1,0 +1,198 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSplit - Smart Settlement</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a class="brand" href="/dashboard">SmartSplit</a>
+        <div class="nav-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/groups">My Groups</a>
+            <a href="/groups/{{ group.group_id }}/balances">Balances</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </nav>
+
+    <main class="container">
+
+        <!-- Page Header -->
+        <section class="welcome-banner">
+            <div>
+                <span class="welcome-tag">SMART DEBT SETTLEMENT</span>
+                <h1>Settle Up 🤝</h1>
+                <p>Find out who should pay whom and simplify group payments.</p>
+            </div>
+            <div class="welcome-decoration">₹</div>
+        </section>
+
+        <!-- Group Information -->
+        <section class="card" style="margin-bottom: 24px;">
+            <p class="stat-label">GROUP</p>
+            <h2>{{ group.group_name }}</h2>
+            {% if group.description %}
+                <p>{{ group.description }}</p>
+            {% endif %}
+        </section>
+
+        <!-- Saved Settlements -->
+        <section class="card" style="margin-bottom: 24px;">
+            <div style="margin-bottom: 22px;">
+                <h2>Saved Settlements</h2>
+                <p class="text-muted">
+                    Track recorded payments and update them when payment is completed.
+                </p>
+            </div>
+
+            {% if saved_settlements %}
+
+                {% for item in saved_settlements %}
+
+                    <article class="settlement-row" style="margin-bottom: 16px;">
+                        <div class="row-icon">
+                            {% if item.status == 'paid' %}
+                                ✓
+                            {% else %}
+                                ₹
+                            {% endif %}
+                        </div>
+
+                        <div class="row-main">
+                            <h3 class="row-title">
+                                {{ item.from_name }} → {{ item.to_name }}
+                            </h3>
+
+                            <p class="row-subtitle">
+                                {% if item.status == 'paid' %}
+                                    This payment has been completed.
+                                {% else %}
+                                    Payment is awaiting completion.
+                                {% endif %}
+                            </p>
+
+                            <div style="margin-top: 10px;">
+                                {% if item.status == 'paid' %}
+                                    <span class="badge badge-success">Paid</span>
+                                {% else %}
+                                    <span class="badge badge-warning">Pending</span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div style="text-align: right; margin-left: auto;">
+                            <p class="stat-label">PAYMENT AMOUNT</p>
+                            <h2 class="stat-value">
+                                ₹{{ "%.2f"|format(item.amount|float) }}
+                            </h2>
+
+                            {% if item.status == 'pending' %}
+                                <form method="POST"
+                                      action="/settlements/{{ item.settlement_id }}/pay"
+                                      style="margin-top: 12px;">
+                                    <button type="submit" class="btn btn-primary">
+                                        ✓ Mark as Paid
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </article>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div class="empty-state">
+                    <div style="font-size: 36px; margin-bottom: 12px;">🧾</div>
+                    <h3>No saved settlements yet</h3>
+                    <p>Save your suggested payments below to start tracking settlements.</p>
+                </div>
+
+            {% endif %}
+        </section>
+
+        <!-- New Suggestions -->
+        <section class="card">
+            <div style="margin-bottom: 22px;">
+                <span class="welcome-tag">GREEDY ALGORITHM</span>
+                <h2 style="margin-top: 12px;">New Settlement Suggestions</h2>
+                <p class="text-muted">
+                    Suggested payments are calculated from the group's current balances
+                    to help reduce the number of transactions.
+                </p>
+            </div>
+
+            {% if transactions %}
+
+                {% for transaction in transactions %}
+
+                    <article class="settlement-row" style="margin-bottom: 16px;">
+                        <div class="row-icon">↗</div>
+
+                        <div class="row-main">
+                            <h3 class="row-title">
+                                {{ transaction.from_name }}
+                            </h3>
+                            <p class="row-subtitle">
+                                Pays {{ transaction.to_name }}
+                            </p>
+                        </div>
+
+                        <div style="text-align: right; margin-left: auto;">
+                            <p class="stat-label">SUGGESTED PAYMENT</p>
+                            <h2 class="stat-value">
+                                ₹{{ "%.2f"|format(transaction.amount|float) }}
+                            </h2>
+                        </div>
+                    </article>
+
+                {% endfor %}
+
+                <div style="margin-top: 24px;">
+                    <form method="POST"
+                          action="/groups/{{ group.group_id }}/settlements/save">
+                        <button type="submit" class="btn btn-primary">
+                            💾 Save Settlement Suggestions
+                        </button>
+                    </form>
+                </div>
+
+            {% else %}
+
+                <div class="empty-state">
+                    <div style="font-size: 40px; margin-bottom: 12px;">🎉</div>
+                    <h3>Everyone is settled up!</h3>
+                    <p>There are no new payments to suggest based on the current balances.</p>
+                </div>
+
+            {% endif %}
+        </section>
+
+        <!-- Navigation Actions -->
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin: 24px 0;">
+            <a href="/groups/{{ group.group_id }}/balances"
+               class="btn btn-secondary">
+                ← View Balances
+            </a>
+
+            <a href="/groups/{{ group.group_id }}"
+               class="btn btn-secondary">
+                Back to Group
+            </a>
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <p>SmartSplit · Split expenses fairly, settle up easily.</p>
+    </footer>
+
+</body>
+</html>
+```

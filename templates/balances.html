@@ -1,0 +1,128 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSplit - Balances</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="/dashboard" class="brand">SmartSplit</a>
+        <div class="nav-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/groups">My Groups</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </nav>
+
+    <main class="container">
+
+        <!-- Page Header -->
+        <section class="welcome-banner">
+            <div>
+                <span class="welcome-tag">FINANCIAL OVERVIEW</span>
+                <h1>Balance Summary 💰</h1>
+                <p>See who owes money and who should receive money.</p>
+            </div>
+            <div class="welcome-decoration">₹</div>
+        </section>
+
+        <!-- Group Information -->
+        <section class="card" style="margin-bottom: 24px;">
+            <p class="stat-label">GROUP</p>
+            <h2>{{ group.group_name }}</h2>
+            {% if group.description %}
+                <p>{{ group.description }}</p>
+            {% endif %}
+        </section>
+
+        <!-- Member Balances -->
+        <section class="card">
+            <h2>Member Balances</h2>
+            <p class="text-muted">
+                A positive balance means the member should receive money.
+                A negative balance means the member owes money.
+            </p>
+
+            <div style="margin-top: 24px;">
+
+                {% for member in members %}
+                    {% set balance = balances.get(member.user_id, 0) %}
+
+                    <article class="expense-row" style="margin-bottom: 16px;">
+                        <div class="row-icon">👤</div>
+
+                        <div class="row-main">
+                            <h3 class="row-title">{{ member.full_name }}</h3>
+
+                            <p class="row-subtitle">{{ member.email }}</p>
+
+                            {% if balance > 0 %}
+                                <span class="badge badge-success">
+                                    Gets money back
+                                </span>
+                            {% elif balance < 0 %}
+                                <span class="badge badge-warning">
+                                    Needs to pay
+                                </span>
+                            {% else %}
+                                <span class="badge">
+                                    Settled up
+                                </span>
+                            {% endif %}
+                        </div>
+
+                        <div style="text-align: right; margin-left: auto;">
+                            {% if balance > 0 %}
+                                <p class="stat-label">SHOULD RECEIVE</p>
+                                <h2 class="stat-value" style="color: var(--green);">
+                                    +₹{{ "%.2f"|format(balance) }}
+                                </h2>
+                            {% elif balance < 0 %}
+                                <p class="stat-label">OWES</p>
+                                <h2 class="stat-value" style="color: #d97706;">
+                                    -₹{{ "%.2f"|format(-balance) }}
+                                </h2>
+                            {% else %}
+                                <p class="stat-label">BALANCE</p>
+                                <h2 class="stat-value">₹0.00</h2>
+                            {% endif %}
+                        </div>
+                    </article>
+
+                {% else %}
+
+                    <div class="empty-state">
+                        <h3>No group members found</h3>
+                        <p>Add members to view their balances.</p>
+                    </div>
+
+                {% endfor %}
+
+            </div>
+        </section>
+
+        <!-- Navigation Actions -->
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin: 24px 0;">
+            <a href="/groups/{{ group.group_id }}" class="btn btn-secondary">
+                ← Back to Group
+            </a>
+
+            <a href="/groups/{{ group.group_id }}/settlements" class="btn btn-primary">
+                View Settlements →
+            </a>
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <p>SmartSplit · Split expenses fairly, settle up easily.</p>
+    </footer>
+
+</body>
+</html>
+```

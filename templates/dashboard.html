@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSplit | Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <a class="brand" href="/dashboard">✳ SmartSplit</a>
+
+        <div class="nav-links">
+            <a href="/dashboard" class="active">Dashboard</a>
+            <a href="/groups">My Groups</a>
+            <a href="/logout">Logout ↗</a>
+        </div>
+    </nav>
+
+    <main class="container">
+
+        <section class="welcome-banner">
+            <div>
+                <span class="welcome-tag">YOUR PERSONAL FINANCE SPACE</span>
+                <h1>Welcome back, {{ session["user_name"] }}! 👋</h1>
+                <p>Share expenses, settle up easily, and keep every trip stress-free.</p>
+            </div>
+            <div class="welcome-decoration">₹</div>
+        </section>
+
+        <div class="section-heading">
+            <div>
+                <h2>Your Overview</h2>
+                <p>A quick look at your shared-expense workspace.</p>
+            </div>
+            <a href="/groups" class="btn btn-secondary">View all groups →</a>
+        </div>
+
+        <section class="grid">
+            <article class="stat-card">
+                <div class="stat-label">💸 &nbsp; You Owe</div>
+                <p class="stat-value">₹{{ "%.2f"|format(you_owe) }}</p>
+                <div class="stat-note">Your pending share of expenses</div>
+            </article>
+
+            <article class="stat-card">
+                <div class="stat-label">💚 &nbsp; You Are Owed</div>
+                <p class="stat-value">₹{{ "%.2f"|format(you_are_owed) }}</p>
+                <div class="stat-note">Money others need to repay you</div>
+            </article>
+
+            <article class="stat-card">
+                <div class="stat-label">👥 &nbsp; My Groups</div>
+                <p class="stat-value">{{ total_groups }}</p>
+                <div class="stat-note">Trips, friends, and shared plans</div>
+                <a href="/groups" class="btn btn-secondary">Explore groups →</a>
+            </article>
+
+            <article class="stat-card">
+                <div class="stat-label">🧾 &nbsp; Recent Expenses</div>
+                <p class="stat-value">{{ total_expenses }}</p>
+                <div class="stat-note">Review expenses from your groups</div>
+                <a href="/groups" class="btn btn-secondary">View expenses →</a>
+            </article>
+        </section>
+
+        <section class="section">
+            <div class="section-heading">
+                <div>
+                    <h2>Quick Actions</h2>
+                    <p>Everything you need, just one click away.</p>
+                </div>
+            </div>
+
+            <div class="grid-3">
+
+                <article class="card">
+                    <div class="group-icon">＋</div>
+                    <h3 style="margin-top: 18px;">Add an Expense</h3>
+                    <p>Record a bill and split the cost fairly with your group.</p>
+                    <a href="/groups" class="btn">Choose a group →</a>
+                </article>
+
+                <article class="card">
+                    <div class="group-icon">♧</div>
+                    <h3 style="margin-top: 18px;">Manage Groups</h3>
+                    <p>Open your groups, check members, and track shared spending.</p>
+                    <a href="/groups" class="btn btn-secondary">My Groups →</a>
+                </article>
+
+                <article class="card">
+                    <div class="group-icon">⇄</div>
+                    <h3 style="margin-top: 18px;">Settle Up</h3>
+                    <p>Find out who owes whom and manage repayment suggestions.</p>
+                    <a href="/groups" class="btn btn-secondary">View Settlements →</a>
+                </article>
+
+            </div>
+        </section>
+
+        <section class="section card">
+            <div class="section-heading">
+                <div>
+                    <h2>Get started with SmartSplit</h2>
+                    <p>Your shared expenses are easier to manage when everything stays organized.</p>
+                </div>
+            </div>
+
+            <div class="flex-between">
+                <div>
+                    <strong>Ready to manage your next expense?</strong>
+                    <p style="margin: 5px 0 0;">Open a group to add expenses, view balances, or settle up.</p>
+                </div>
+                <a href="/groups" class="btn">Go to My Groups →</a>
+            </div>
+        </section>
+
+        <footer style="text-align:center; padding:28px 0 10px;">
+            <p>Made for friends, trips, and stress-free splitting. 💚</p>
+        </footer>
+
+    </main>
+
+</body>
+</html>

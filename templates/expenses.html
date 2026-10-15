@@ -1,0 +1,131 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSplit - All Expenses</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="/dashboard" class="brand">SmartSplit</a>
+        <div class="nav-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/groups">My Groups</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </nav>
+
+    <main class="container">
+
+        <!-- Page Header -->
+        <section class="welcome-banner">
+            <div>
+                <span class="welcome-tag">EXPENSE HISTORY</span>
+                <h1>All Expenses 💰</h1>
+                <p>Track your group's spending in one place.</p>
+            </div>
+            <div class="welcome-decoration">₹</div>
+        </section>
+
+        <!-- Group Information -->
+        <section class="card" style="margin-bottom: 24px;">
+            <p class="stat-label">GROUP</p>
+            <h2>{{ group.group_name }}</h2>
+            {% if group.description %}
+                <p>{{ group.description }}</p>
+            {% endif %}
+        </section>
+
+        <!-- Expense List -->
+        <section class="card">
+            <div class="row" style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;">
+                <div>
+                    <h2>Expense History</h2>
+                    <p class="text-muted">Review expenses recorded for this group.</p>
+                </div>
+                <a href="/groups/{{ group.group_id }}/add-expense" class="btn btn-primary">
+                    + Add Expense
+                </a>
+            </div>
+
+            <div style="margin-top: 24px;">
+
+                {% if expenses %}
+
+                    {% for expense in expenses %}
+
+                        <article class="expense-row" style="margin-bottom: 16px;">
+                            <div class="row-icon">₹</div>
+
+                            <div class="row-main">
+                                <h3 class="row-title">{{ expense.description }}</h3>
+
+                                <p class="row-subtitle">
+                                    Paid by {{ expense.paid_by_name }}
+                                </p>
+
+                                <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px;">
+                                    <span class="badge">
+                                        {{ expense.split_type | title }} Split
+                                    </span>
+
+                                    <span class="badge">
+                                        {{ expense.expense_date }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div style="text-align: right; margin-left: auto;">
+                                <p class="stat-label">TOTAL AMOUNT</p>
+                                <h2 class="stat-value">
+                                    ₹{{ "%.2f"|format(expense.total_amount|float) }}
+                                </h2>
+                            </div>
+                        </article>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <div class="empty-state">
+                        <div style="font-size: 40px; margin-bottom: 12px;">🧾</div>
+                        <h3>No expenses yet</h3>
+                        <p>Your group's expenses will appear here after you add one.</p>
+                        <a
+                            href="/groups/{{ group.group_id }}/add-expense"
+                            class="btn btn-primary"
+                            style="margin-top: 16px;"
+                        >
+                            Add Your First Expense
+                        </a>
+                    </div>
+
+                {% endif %}
+
+            </div>
+        </section>
+
+        <!-- Navigation Actions -->
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; margin: 24px 0;">
+            <a href="/groups/{{ group.group_id }}" class="btn btn-secondary">
+                ← Back to Group
+            </a>
+
+            <a href="/groups" class="btn btn-secondary">
+                View All Groups
+            </a>
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <p>SmartSplit · Split expenses fairly, settle up easily.</p>
+    </footer>
+
+</body>
+</html>
+```

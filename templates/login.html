@@ -1,0 +1,80 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSplit | Login</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="auth-page">
+
+    <main class="auth-card">
+
+        <a href="/" class="brand" style="text-decoration: none;">
+            ✳ SmartSplit
+        </a>
+
+        <div style="margin-top: 30px;">
+            <span class="welcome-tag">WELCOME BACK</span>
+            <h1 style="margin-top: 12px;">Login to your account</h1>
+            <p class="text-muted">
+                Your shared expenses, all in one place.
+            </p>
+        </div>
+
+        <form method="POST" style="margin-top: 28px;">
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="you@example.com"
+                    autocomplete="email"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                    required
+                >
+            </div>
+
+            <button type="submit"
+                    class="btn btn-primary"
+                    style="width: 100%; margin-top: 12px;">
+                Login to SmartSplit →
+            </button>
+
+        </form>
+
+        <div style="text-align: center; margin-top: 24px;">
+            <p class="text-muted">
+                Don't have an account?
+                <a href="{{ url_for('auth.register') }}">
+                    Create one
+                </a>
+            </p>
+        </div>
+
+        <div style="text-align: center; margin-top: 24px;">
+            <p class="text-muted">
+                Split expenses fairly. Settle up easily. 💚
+            </p>
+        </div>
+
+    </main>
+
+</body>
+</html>
